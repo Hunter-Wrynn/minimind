@@ -57,10 +57,10 @@ def train_tokenizer():
     assert tokenizer.token_to_id("</s>") == 2
 
     # 保存tokenizer
-    tokenizer_dir = "../model/minimind_tokenizer"
+    tokenizer_dir = "../model/my_minimind_tokenizer"
     os.makedirs(tokenizer_dir, exist_ok=True)
     tokenizer.save(os.path.join(tokenizer_dir, "tokenizer.json"))
-    tokenizer.model.save("../model/minimind_tokenizer")
+    tokenizer.model.save("../model/my_minimind_tokenizer")
 
     # 手动创建配置文件
     config = {
@@ -118,7 +118,7 @@ def eval_tokenizer():
     from transformers import AutoTokenizer
 
     # 加载预训练的tokenizer
-    tokenizer = AutoTokenizer.from_pretrained("../model/minimind_tokenizer")
+    tokenizer = AutoTokenizer.from_pretrained("../model/my_minimind_tokenizer")
 
     messages = [
         {"role": "system", "content": "你是一个优秀的聊天机器人，总是给我正确的回应！"},
