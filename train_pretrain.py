@@ -110,7 +110,7 @@ def init_distributed_mode():
     ddp_rank = int(os.environ["RANK"])
     ddp_local_rank = int(os.environ["LOCAL_RANK"])
     ddp_world_size = int(os.environ["WORLD_SIZE"])
-    DEVICE = f"cuda:{ddp_local_rank}"  # 改为动态分配设备
+    DEVICE = f"cuda:{ddp_local_rank + 6}"  # 改为动态分配设备
     torch.cuda.set_device(DEVICE)
     args.device = torch.device(DEVICE)  # 更新 args.device
 
@@ -186,7 +186,7 @@ if __name__ == "__main__":
 
     if ddp:
         model._ddp_params_and_buffers_to_ignore = {"pos_cis"}
-        model = DistributedDataParallel(model, device_ids=[ddp_local_rank])
+        model = DistributedDataParallel(model, device_ids=[ddp_local_rank + 6])
 
     iter_per_epoch = len(train_loader)
     for epoch in range(args.epochs):
