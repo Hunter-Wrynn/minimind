@@ -110,8 +110,9 @@ def init_distributed_mode():
     ddp_rank = int(os.environ["RANK"])
     ddp_local_rank = int(os.environ["LOCAL_RANK"])
     ddp_world_size = int(os.environ["WORLD_SIZE"])
-    DEVICE = f"cuda:{ddp_local_rank}"
+    DEVICE = f"cuda:{ddp_local_rank}"  # 改为动态分配设备
     torch.cuda.set_device(DEVICE)
+    args.device = torch.device(DEVICE)  # 更新 args.device
 
 
 # torchrun --nproc_per_node 2 1-pretrain.py
@@ -154,7 +155,7 @@ if __name__ == "__main__":
     ctx = nullcontext() if device_type == "cpu" else torch.cuda.amp.autocast()
 
     ddp = int(os.environ.get("RANK", -1)) != -1  # is this a ddp run?
-    ddp_local_rank, DEVICE = 0, "cuda:0"
+    ddp_local_rank, DEVICE = 0, "cuda:6"
 
     if ddp:
         init_distributed_mode()
