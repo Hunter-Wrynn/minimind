@@ -117,6 +117,7 @@ def init_distributed_mode():
     ddp_world_size = int(os.environ["WORLD_SIZE"])
     DEVICE = f"cuda:{ddp_local_rank}"
     torch.cuda.set_device(DEVICE)
+    args.device = torch.device(DEVICE)  # 更新 args.device
 
 
 if __name__ == "__main__":
@@ -125,7 +126,7 @@ if __name__ == "__main__":
     parser.add_argument("--epochs", type=int, default=1)
     parser.add_argument("--batch_size", type=int, default=32)
     parser.add_argument("--learning_rate", type=float, default=5e-5)
-    parser.add_argument("--device", type=str, default="cuda:0" if torch.cuda.is_available() else "cpu")
+    parser.add_argument("--device", type=str, default="cuda:6" if torch.cuda.is_available() else "cpu")
     parser.add_argument("--dtype", type=str, default="bfloat16")
     parser.add_argument("--use_wandb", action="store_true")
     parser.add_argument("--wandb_project", type=str, default="MiniMind-Full-SFT")
@@ -157,7 +158,7 @@ if __name__ == "__main__":
 
     ctx = nullcontext() if device_type == "cpu" else torch.cuda.amp.autocast()
     ddp = int(os.environ.get("RANK", -1)) != -1  # is this a ddp run?
-    ddp_local_rank, DEVICE = 0, "cuda:0"
+    ddp_local_rank, DEVICE = 0, "cuda:6"
     if ddp:
         init_distributed_mode()
         args.device = torch.device(DEVICE)
