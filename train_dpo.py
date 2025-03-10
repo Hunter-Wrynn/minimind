@@ -131,10 +131,10 @@ def train_epoch(epoch, wandb):
 
 
 def init_model(lm_config):
-    tokenizer = AutoTokenizer.from_pretrained('./model/minimind_tokenizer')
+    tokenizer = AutoTokenizer.from_pretrained('/home/xiaoyicheng/test/minimind/model/my_minimind_tokenizer')
     model = MiniMindLM(lm_config)
     moe_path = '_moe' if lm_config.use_moe else ''
-    ckp = f'./out/full_sft_{lm_config.dim}{moe_path}.pth'
+    ckp = f'/home/xiaoyicheng/test/minimind/out/full_sft_512.pth'
     state_dict = torch.load(ckp, map_location=args.device)
     model.load_state_dict(state_dict, strict=False)
     # 初始化参考模型
@@ -185,7 +185,7 @@ if __name__ == "__main__":
     parser.add_argument('--n_layers', default=8, type=int)
     parser.add_argument('--max_seq_len', default=3000, type=int)
     parser.add_argument('--use_moe', default=False, type=bool)
-    parser.add_argument("--data_path", type=str, default="./dataset/dpo.jsonl")
+    parser.add_argument("--data_path", type=str, default="/home/xiaoyicheng/test/minimind/dataset/dpo.jsonl")
 
     args = parser.parse_args()
 
