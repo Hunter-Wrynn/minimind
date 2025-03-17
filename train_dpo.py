@@ -160,6 +160,7 @@ def init_distributed_mode():
     ddp_world_size = int(os.environ["WORLD_SIZE"])
     DEVICE = f"cuda:{ddp_local_rank}"
     torch.cuda.set_device(DEVICE)
+    args.device = torch.device(DEVICE)  # 更新 args.device
 
 
 if __name__ == "__main__":

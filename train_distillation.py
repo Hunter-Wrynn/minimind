@@ -145,7 +145,7 @@ def train_epoch(epoch, wandb, alpha=0.0, temperature=1.0):
 
 
 def init_student_model(lm_config):
-    tokenizer = AutoTokenizer.from_pretrained('./model/minimind_tokenizer')
+    tokenizer = AutoTokenizer.from_pretrained('/home/xiaoyicheng/test/minimind/model/my_minimind_tokenizer')
     model = MiniMindLM(lm_config)
     moe_path = '_moe' if lm_config.use_moe else ''
     ckp = f'./out/full_sft_{lm_config.dim}{moe_path}.pth'
@@ -198,7 +198,7 @@ if __name__ == "__main__":
     parser.add_argument("--log_interval", type=int, default=100)
     parser.add_argument("--save_interval", type=int, default=100)
     parser.add_argument('--local_rank', type=int, default=-1)
-    parser.add_argument("--data_path", type=str, default="./dataset/sft_data.jsonl")
+    parser.add_argument("--data_path", type=str, default="./dataset/sft_512.jsonl")
 
     args = parser.parse_args()
     # 定义学生模型和教师模型

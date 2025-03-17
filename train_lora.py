@@ -85,10 +85,10 @@ def train_epoch(epoch, wandb):
 
 
 def init_model(lm_config):
-    tokenizer = AutoTokenizer.from_pretrained('./model/minimind_tokenizer')
+    tokenizer = AutoTokenizer.from_pretrained('/home/xiaoyicheng/test/minimind/model/my_minimind_tokenizer')
     model = MiniMindLM(lm_config)
     moe_path = '_moe' if lm_config.use_moe else ''
-    ckp = f'./out/rlhf_{lm_config.dim}{moe_path}.pth'
+    ckp = f'/home/xiaoyicheng/test/minimind/out/rlhf_512.pth'
     state_dict = torch.load(ckp, map_location=args.device)
     model.load_state_dict(state_dict, strict=False)
     return model.to(args.device), tokenizer
@@ -104,7 +104,7 @@ def init_distributed_mode():
     ddp_world_size = int(os.environ["WORLD_SIZE"])
     DEVICE = f"cuda:{ddp_local_rank}"
     torch.cuda.set_device(DEVICE)
-
+    args.device = torch.device(DEVICE)  # 更新 args.device
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="MiniMind SFT with LoRA")
@@ -128,7 +128,7 @@ if __name__ == "__main__":
     parser.add_argument('--n_layers', default=8, type=int)
     parser.add_argument('--max_seq_len', default=512, type=int)
     parser.add_argument('--use_moe', default=False, type=bool)
-    parser.add_argument("--data_path", type=str, default="./dataset/lora_identity.jsonl")
+    parser.add_argument("--data_path", type=str, default="/home/xiaoyicheng/test/minimind/dataset/lora_identity.jsonl")
     parser.add_argument("--lora_name", type=str, default="lora_identity", help="根据任务保存成lora_(英文/医学/心理...)")
     args = parser.parse_args()
 
